@@ -17,11 +17,6 @@ uint16_t sensorValues[SensorCount];
 // Settings
 int tipo_de_pista = 1; //1 para pista negra, 0 para pista blanca
 
-// float KP = 0.05;
-// float KD = 0.1;
-// float KI = 0.02;
-// int max_speed = 100;
-
 float KP = 0.09;
 float KD = 0.3;
 float KI = 0.0;
@@ -38,9 +33,9 @@ float diferencial = 0;
 int error = 0;
 
 void setup() {
-  //TCCR2B = TCCR2B & B11111000 | B00000011;
+  //PWM Frequency
   TCCR2B = TCCR2B & B11111000 | B00000011;  
-  //TCCR1B = TCCR1B & B11111000 | B00000011;
+
   qtr.setTypeAnalog();
   qtr.setSensorPins((const uint8_t[]){A7, A6, A5, A4, A3, A2, A1, A0}, SensorCount);
   qtr.setEmitterPin(2);
@@ -51,7 +46,6 @@ void setup() {
   pinMode(izq2, OUTPUT);
   pinMode(der1, OUTPUT);
   pinMode(der2, OUTPUT);
-  //pinMode(GO, INPUT);
   
   while(digitalRead(start_button) == HIGH);
   digitalWrite(led_indicador, HIGH);
@@ -143,7 +137,6 @@ void moverMotores(int izq, int der) {
   analogWrite(pwmd, der);
 }
 
-//TODO
 void frenos() {
   if(position<=150){
     moverMotores(-max_speed, max_speed);    
